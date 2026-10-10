@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard - Resume Analyzer{% endblock %}
+
+{% block content %}
+<main class="page page-wide">
+    <div class="dash-header">
+        <div>
+            <h1>Admin Dashboard</h1>
+            <p>Every resume that has been analysed.</p>
+        </div>
+        <form action="{{ url_for('main.admin_logout') }}" method="post">
+            <button type="submit" class="btn-outline">Log out</button>
+        </form>
+    </div>
+
+    <div class="stat-grid">
+        <div class="stat-card">
+            <div class="stat-label">Resumes analysed</div>
+            <div class="stat-value">{{ count }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Average score</div>
+            <div class="stat-value">{{ average }}</div>
+        </div>
+        <div class="stat-card">
+            <div class="stat-label">Top field</div>
+            <div class="stat-value" style="font-size:1.25rem; padding-top:8px;">{{ top_field }}</div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>All submissions</h2>
+        {% if rows %}
+        <div class="table-wrap">
+            <table class="submissions-table">
+                <thead>
+                    <tr>
+                        <th>Name</th><th>Email</th><th>Score</th>
+                        <th>Field</th><th>Level</th><th>Date (UTC)</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for row in rows %}
+                    <tr>
+                        <td data-label="Name">{{ row.name }}</td>
+                        <td data-label="Email">{{ row.email }}</td>
+                        <td data-label="Score"><span class="score-pill">{{ row.score }}</span></td>
+                        <td data-label="Field">{{ row.field }}</td>
+                        <td data-label="Level">{{ row.level }}</td>
+                        <td data-label="Date">{{ row.created_at.strftime("%d %b %Y, %H:%M") }}</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <p class="empty-state">No resumes have been analysed yet.</p>
+        {% endif %}
+    </div>
+</main>
+{% endblock %}

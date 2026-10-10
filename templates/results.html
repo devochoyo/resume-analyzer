@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+
+{% block title %}Resume Analysis Results - Resume Analyzer{% endblock %}
+
+{% block content %}
+<main class="page">
+    <a href="{{ url_for('main.index') }}" class="back-link">&larr; Analyze another resume</a>
+
+    <div class="card result-top">
+        <h2>{{ r.name }}</h2>
+        <p class="result-sub">Resume analysis</p>
+        <div class="score-ring" style="--pct:{{ r.score }}">
+            <div class="score-inner">
+                <span class="score-num">{{ r.score }}</span>
+                <span class="score-denom">out of 100</span>
+            </div>
+        </div>
+        <div class="score-verdict">{{ r.verdict }}</div>
+        <div class="meta-grid">
+            <div class="meta-item"><div class="meta-label">Predicted field</div><div class="meta-value">{{ r.field }}</div></div>
+            <div class="meta-item"><div class="meta-label">Level</div><div class="meta-value">{{ r.level }}</div></div>
+            {% if r.jd_match is not none %}
+            <div class="meta-item"><div class="meta-label">Job match</div><div class="meta-value">{{ r.jd_match }}%</div></div>
+            {% endif %}
+            <div class="meta-item"><div class="meta-label">Pages</div><div class="meta-value">{{ r.pages }}</div></div>
+        </div>
+    </div>
+
+    <div class="card">
+        <h2>Detected skills</h2>
+        {% if r.skills %}
+        <ul class="tag-list">
+            {% for skill in r.skills %}<li class="tag">{{ skill }}</li>{% endfor %}
+        </ul>
+        {% else %}
+        <p class="empty-state">None detected.</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h2>Education</h2>
+        {% if r.education.raw_lines %}
+        <ul class="edu-list">{% for line in r.education.raw_lines %}<li>{{ line }}</li>{% endfor %}</ul>
+        {% elif r.education.degrees_found %}
+        <ul class="edu-list">{% for degree in r.education.degrees_found %}<li>{{ degree }}</li>{% endfor %}</ul>
+        {% else %}
+        <p class="empty-state">No education details detected.</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h2>Skills worth adding</h2>
+        {% if r.recommended_skills %}
+        <ul class="tag-list">
+            {% for skill in r.recommended_skills %}<li class="tag tag-muted">{{ skill }}</li>{% endfor %}
+        </ul>
+        {% else %}
+        <p class="empty-state">None to suggest.</p>
+        {% endif %}
+    </div>
+
+    <div class="card">
+        <h3>Recommended courses</h3>
+        <ul class="course-list">
+            {% for course in r.recommended_courses %}
+            <li><a href="https://www.google.com/search?q={{ (course ~ ' course') | urlencode }}" target="_blank" rel="noopener">{{ course }} &rarr;</a></li>
+            {% endfor %}
+        </ul>
+    </div>
+
+    <div class="card">
+        <h3>Improvement tips</h3>
+        <ul class="tips-list">
+            {% for tip in r.tips %}<li>{{ tip }}</li>{% endfor %}
+        </ul>
+    </div>
+</main>
+{% endblock %}

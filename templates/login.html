@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Login - Resume Analyzer{% endblock %}
+
+{% block content %}
+<main class="page login-wrap">
+    <div class="card login-card">
+        <div class="login-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg>
+        </div>
+        <h1>Admin Login</h1>
+        <p class="login-sub">Sign in to view submitted resumes.</p>
+
+        <form action="{{ url_for('main.admin_login') }}" method="post">
+            <div class="form-group">
+                <label class="field-label" for="username">Username</label>
+                <input type="text" id="username" name="username" autocomplete="username">
+            </div>
+
+            <div class="form-group">
+                <label class="field-label" for="password">Password</label>
+                <input type="password" id="password" name="password" autocomplete="current-password">
+            </div>
+
+            <button type="submit" class="btn-primary">Log In</button>
+            {% if error %}<p class="form-message error" role="alert">{{ error }}</p>{% endif %}
+        </form>
+    </div>
+</main>
+{% endblock %}

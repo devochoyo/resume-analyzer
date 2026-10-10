@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block content %}
+<main class="page">
+    <div class="hero">
+        <h1>Get instant feedback on your resume</h1>
+        <p>Upload your resume and optionally paste a job description to see your score, detected skills and how well you match the role.</p>
+    </div>
+
+    <div class="card">
+        <form id="analyzeForm" action="{{ url_for('main.analyze') }}" method="post" enctype="multipart/form-data">
+            <div class="form-group">
+                <span class="field-label">Your resume</span>
+                <label class="upload-box" id="uploadBox" for="resumeFile">
+                    <svg class="upload-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 16V4"/><path d="M7 9l5-5 5 5"/><path d="M4 16v3a1 1 0 0 0 1 1h14a1 1 0 0 0 1-1v-3"/></svg>
+                    <span class="upload-title" id="uploadTitle">Tap to choose a file</span>
+                    <span class="upload-sub" id="uploadSub">PDF or TXT</span>
+                    <input type="file" id="resumeFile" name="resume" accept=".pdf,.txt">
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label class="field-label" for="jdText">Job description <span class="field-hint">(optional)</span></label>
+                <textarea id="jdText" name="job_description" rows="5" placeholder="Paste the job description here to get a match score"></textarea>
+            </div>
+
+            <button type="submit" class="btn-primary" id="analyzeBtn">Analyze Resume</button>
+            {% if error %}<p class="form-message error" role="alert">{{ error }}</p>{% endif %}
+        </form>
+    </div>
+
+    <div class="card">
+        <h2>How it works</h2>
+        <div class="steps">
+            <div class="step"><div class="step-num">1</div><strong>Read</strong><span>Your resume is converted to plain text and broken into words.</span></div>
+            <div class="step"><div class="step-num">2</div><strong>Extract</strong><span>Rules and keyword lists pick out your contact details, education and skills.</span></div>
+            <div class="step"><div class="step-num">3</div><strong>Score</strong><span>A scoring guide rates your resume and predicts your professional field.</span></div>
+            <div class="step"><div class="step-num">4</div><strong>Improve</strong><span>You get skill suggestions, courses and tips tailored to your resume.</span></div>
+        </div>
+    </div>
+</main>
+{% endblock %}
+
+{% block scripts %}
+<script src="{{ url_for('static', filename='home.js') }}"></script>
+{% endblock %}
